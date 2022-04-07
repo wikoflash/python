@@ -1,35 +1,22 @@
 import boto3
 import argparse
 
-s3_client = boto3.client('s3')
-s3_resource = boto3.resource('s3')
+s3 = boto3.client('s3')
+#s3_resource = boto3.resource('s3')
 
 def delete_file(bucket_name,file_name):
     if(key_exists(bucket_name,file_name)):
-        s3_client.delete_object(Bucket=bucket_name, Key=file_name)
+        s3.delete_object(Bucket=bucket_name, Key=file_name)
         print('file was succesfully deleted')
     else:
-        print("File Doesnt exists")
-
-#def key_exists(bucket_name, file_name):
-#    bucket = s3.Bucket(bucket_name)
-#    file_name = file_name
-#    obj = list(bucket.objects.filter(Prefix=file_name))
-#   if len(obj) > 0:
-#       print("File exists")
-#        return True
-#    else:
-#        print("File Doesnt exists")
-#        return False
+        print("File doesnt exists")
 
 def key_exists(bucket_name, file_name):
-    obj = s3_resource.Object(bucket_name, file_name)
-    try:
-        obj.load()
-        return True
-    except:
+    result = s3.list_objects(Bucket=bucket_name)
+    for obj in result.get("Contents", []):
+        if(obj.get("Key") == file_name):
+            return True
         return False
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -42,3 +29,24 @@ if __name__ == "__main__":
     main()
 
 # exec :   python .\davaleba3\davaleba3_2.py -b prodmybucketwiko -f davaleba3/test.html
+
+
+
+#def key_exists(bucket_name, file_name):
+#    bucket = s3.Bucket(bucket_name)
+#    file_name = file_name
+#    obj = list(bucket.objects.filter(Prefix=file_name))
+#   if len(obj) > 0:
+#       print("File exists")
+#        return True
+#    else:
+#        print("File Doesnt exists")
+#        return False
+
+#def key_exists(bucket_name, file_name):
+#    obj = s3_resource.Object(bucket_name, file_name)
+#    try:
+#        obj.load()
+#        return True
+#    except:
+#        return False

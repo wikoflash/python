@@ -4,8 +4,12 @@ import argparse
 s3 = boto3.client('s3')
 
 def put_file(bucket_name,file_name):
+    try:
         with open(file_name, "rb") as file:
             s3.put_object(Bucket=bucket_name, Key=file_name, Body=file.read())
+            print('file was succesfully put')
+    except Exception as ex:
+        print(ex)
 
 def main():
     parser = argparse.ArgumentParser()
