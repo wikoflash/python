@@ -24,15 +24,12 @@ def enable_versioning(bucket_name):
 def getasd(bucket_name,file_name):
     versions =s3.list_object_versions(Bucket = bucket_name)
 
-    for version in versions.get("Contents", []):
-
-
+    #for version in versions.get("Contents", []):
 
     pprint.pprint(versions)
     # for version in versions:
     #    version
-    #print(k.version_id for k in versions)
-
+    #pprint.print(k.version_id for k in versions)
 
 def main():
     parser = argparse.ArgumentParser()
